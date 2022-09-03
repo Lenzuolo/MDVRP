@@ -1,0 +1,48 @@
+#radiobutton {
+    display: flex;
+    justify-content: center;
+    width: auto;
+    font-size: 1.25em;
+    gap: .15em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#radiobutton label {
+    user-select: none;
+    cursor: pointer;
+}
+
+.submit-button {
+    background-color: hsla(0, 5%, 25%, 5);
+    color: white;
+    font-weight: bold;
+    padding: 5;
+    margin: 2em;
+    border: .25em hsla(0, 5%, 19%, 5) outset;
+    border-radius: .35em;
+    width: 12em;
+    height: 2em;
+}
+
+.submit-button:active {
+    animation: push 200ms ease-in-out;
+}
+
+.submit-button:hover {
+    background-color: hsla(0, 5%, 45%, 5);
+    border: .25em hsla(0, 5%, 39%, 5) outset;
+}
+
+@keyframes push {
+    50%{
+        transform: scale(98%);
+        box-shadow: 0 0 10px 0 hsla(0, 5%, 23%, 5);
+    }
+    75%{
+        transform: scale(96%);
+        box-shadow: 0 0 10px 0 hsla(0, 5%, 23%, 5);
+    }
+    100%{
+        transform: scale(95%);
+        box-shadow: 0 0 10px 0 hsla(0, 5%, 23%, 5);
+    }
+}
