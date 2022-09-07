@@ -1,11 +1,14 @@
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
+import { MainContext } from "../../contexts";
 import { ResourceManager } from "../../utils/ResourceManager";
+import { Case, Switch } from "../helpers";
 import { SolverFormComponent } from "../solver-form-component";
 import './landing-page.css';
 
 const LandingPage: FC = () => {
 
     const [languageContext,setLanguageContext] = useState('EN');
+    const { step } = useContext(MainContext);
 
     return (
         <div className="landing-page">
@@ -22,7 +25,14 @@ const LandingPage: FC = () => {
                 </div>
             </div>
             <div className="body">
-                <SolverFormComponent/>
+                <Switch value={step} defaultComponent={<div/>}>
+                    <Case value={1}>
+                        <SolverFormComponent/>
+                    </Case>
+                    <Case value={2}>
+                        
+                    </Case>
+                </Switch>
             </div>
         </div>
     );

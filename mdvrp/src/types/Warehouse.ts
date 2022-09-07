@@ -3,8 +3,8 @@ import { ActiveClass } from "./ActiveClass";
 export class Warehouse implements ActiveClass {
     id: number;
     name?: string;
-    posX?: number;
-    posY?: number;
+    xPos?: number;
+    yPos?: number;
     cars?: number;
     isActive?: boolean;
     constructor(id: number) {
