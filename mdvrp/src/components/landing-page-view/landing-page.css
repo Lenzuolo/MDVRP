@@ -26,9 +26,11 @@ html::-webkit-scrollbar-thumb:hover{
     justify-content: space-evenly;
     height: 15%;
     max-height: 5em;
+    text-align: left;
     background-color: hsl(0, 100%, 70%);
     color: white;
     border-bottom: .2em hsl(0, 65%, 70%) inset;
+    padding: 0 6px;
 }
 
 .landing-page .body {

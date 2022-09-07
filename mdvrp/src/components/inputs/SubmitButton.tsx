@@ -3,7 +3,7 @@ import './inputs.css';
 
 interface SubmitButtonProps {
     label: string;
-    onClick: () => void;
+    onClick?: () => void;
 }
 
 const SubmitButton: FC<SubmitButtonProps> = (props: SubmitButtonProps) => {

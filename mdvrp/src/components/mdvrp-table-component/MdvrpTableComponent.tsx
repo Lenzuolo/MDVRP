@@ -8,7 +8,7 @@ import { NumberInput, TextInput } from "../inputs";
 
 const MdvrpTableComponent: FC<TableProps> = (props: TableProps) => {
     
-    const [data,setData] = useState([] as any[]);
+    const [data,setData] = useState(props.dataProvider);
     const [selectedItem,setSelectedItem]: any = useState();
 
     const addData = () => {
@@ -22,6 +22,9 @@ const MdvrpTableComponent: FC<TableProps> = (props: TableProps) => {
                 break;    
         }
         setData(newData);
+        if(props.onDataUpdate) {
+            props.onDataUpdate(newData,props.dataType);
+        }
     }
 
     const deleteData = () => {
@@ -30,6 +33,9 @@ const MdvrpTableComponent: FC<TableProps> = (props: TableProps) => {
         newData.splice(index,1);
         setSelectedItem();
         setData(newData);
+        if(props.onDataUpdate) {
+            props.onDataUpdate(newData,props.dataType);
+        }
     }
 
     const manageSelection = (obj: any) => {
@@ -46,29 +52,42 @@ const MdvrpTableComponent: FC<TableProps> = (props: TableProps) => {
         }
     }
      
-    const onBlur = () => {
+    const onBlur = (e:any) => {
+        if (!(e.relatedTarget?.id.toString() === "actionBtn")) {
+            const newData = [...data];
+            newData.forEach((obj) => {
+                if(selectedItem?.id === obj.id) {
+                    obj.isActive = false;
+                    selectedItem.isActive = false;
+                }
+            })
+            setData(newData);
+            setSelectedItem();
+        }
+    }
+
+    const handleInputChange = (value: any, modelName: string, objectId: number) => {
         const newData = [...data];
-        newData.forEach((obj) => {
-            if(selectedItem.id === obj.id) {
-                obj.isActive = false;
-                selectedItem.isActive = false;
-            }
-        })
+        newData.find(o => o.id === objectId)[modelName] = value;
         setData(newData);
-        setSelectedItem();
+        if(props.onDataUpdate) {
+            props.onDataUpdate(newData,props.dataType);
+        }
     }
 
     const createInputField = (col: Column, obj: any) => {
         switch(col.inputType){
             case 'text':
-                return <TextInput content={obj[col.dataName]}/>
+                return <TextInput modelName={col.dataName} objectId={obj.id} content={obj[col.dataName]} onChange={handleInputChange}/>
             case 'number':
-                return <NumberInput data={obj[col.dataName]} kind={col.kind} precisionFloat={2} precisionInteger={2}/>;    
+                return <NumberInput data={obj[col.dataName]} kind={col.kind} 
+                modelName={col.dataName} objectId={obj.id} onChange={handleInputChange}
+                precisionFloat={2} precisionInteger={2}/>;    
         }
     }
 
     return (
-    <div id='tableBox' onBlur={()=>onBlur()}>
+    <div id='tableBox'>
         <div className="table-header">
             <h3>{props.label}</h3>
             {props.additionalButtonsVisible && 
@@ -81,15 +100,15 @@ const MdvrpTableComponent: FC<TableProps> = (props: TableProps) => {
             <table id='mdvrpTable'>
                 <thead>
                     <tr>
-                        {props.columnDef.map((col,i)=><th id={`th-${props.dataType}-${i}`}>{col.labelName}</th>)}
+                        {props.columnDef.map((col,i)=><th key={`th-${props.dataType}-${i}`}>{col.labelName}</th>)}
                     </tr>
                 </thead>
                 <tbody>
                     {data.map((obj) => {
                         return (
-                            <tr id={obj.id} className={obj.isActive && 'active'} onClick={()=> manageSelection(obj)}>
+                            <tr key={obj.id} className={obj.isActive ? 'active' : undefined} onBlur={(e: any)=>setTimeout(()=>onBlur(e))} onClick={()=> manageSelection(obj)}>
                                 {props.columnDef.map((col)=>
-                                <td>
+                                <td key={`td-${col.dataName}-${obj.id}`}>
                                     {createInputField(col,obj)}
                                 </td>)}
                             </tr>
