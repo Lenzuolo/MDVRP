@@ -2,7 +2,7 @@ import { FC, useContext } from "react";
 import { DefaultContextState, MainContext } from "../../contexts";
 import { Column } from "../../types/Column";
 import { ResourceManager } from "../../utils/ResourceManager";
-import { RadioButton, SubmitButton } from "../inputs";
+import { AppButton, RadioButton } from "../inputs";
 import { MdvrpTableComponent } from "../mdvrp-table-component";
 import './solver-form-component.css';
 import '../../App.css';
@@ -61,7 +61,7 @@ const SolverFormComponent: FC = () => {
                 <RadioButton id='tabu' formModel={method} label={ResourceManager.getLabel('TabuSearch','EN')} name='method' value='tabu' onChange={handleRadioButton}/>
                 <RadioButton id='annealing' formModel={method} label={ResourceManager.getLabel('SimulatingAnnealing','EN')} name='method' onChange={handleRadioButton} value='simulatingAnnealing' disabled/>
             </div>
-            <SubmitButton label={ResourceManager.getLabel('Calculate','EN')} />
+            <AppButton type="submit" label={ResourceManager.getLabel('Calculate','EN')} />
         </form>
     );
 }

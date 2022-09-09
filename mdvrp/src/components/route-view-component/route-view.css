@@ -1,10 +1,11 @@
 .route-box {
     display: flex;
-    width: 100%;
+    max-width: 80%;
     font-weight: bold;
-    justify-content: center;
+    justify-content: stretch;
     align-items: center;
-    gap: 1em;
+    flex-wrap: nowrap;
+    gap: .4em;
 }
 
 

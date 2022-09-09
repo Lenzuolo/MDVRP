@@ -18,7 +18,7 @@ const SolutionPresentation = () => {
             <div className='result-list'>
                 {
                     routes.map(r => r.map((rr,i) => (
-                    <div style={{'display':'flex','justifyContent':'space-between','width':'100%'}}>
+                    <div key={`route-${i}`} style={{'display':'flex','justifyContent':'center','width':'100%'}}>
                         <RouteView routeInfo={rr} showDistanceUp={false}/>
                     </div>)))
                 }
