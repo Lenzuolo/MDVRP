@@ -1,5 +1,9 @@
 import React, { FC, useState } from "react";
+import { ClusterService } from "../services";
+import { VehicleRoutingService } from "../services/vehicle-routing-service";
 import { Customer } from "../types/Customer";
+import { DepotRegionCluster } from "../types/DepotRegionCluster";
+import { RouteInformation } from "../types/RouteInformation";
 import { Warehouse } from "../types/Warehouse"
 
 export type DefaultContextState = {
@@ -7,6 +11,8 @@ export type DefaultContextState = {
     customers: Customer[];
     method: string;
     step: number;
+    depotRegionClusters?: DepotRegionCluster[];
+    routes: RouteInformation[][]; 
     updateWarehouses?: (arr: Warehouse[]) => void;
     updateCustomers?: (arr: Customer[]) => void;
     updateMethod?: (value: string) => void; 
@@ -18,6 +24,7 @@ const defaultState = () => {
         warehouses: [],
         customers: [],
         method: 'tabu',
+        routes: [],
         step: 1,
     } as DefaultContextState;
 }
@@ -34,6 +41,7 @@ const MainContextProvider: FC<ContextProps> = ({children}) => {
     const [customers, setCustomers] = useState([] as Customer[]);
     const [method, setMethod] = useState('tabu');
     const [step, setStep] = useState(1);
+    const [routes, setRoutes] = useState([] as RouteInformation[][]);
 
     const updateWarehouses = (arr: Warehouse[]) => {
         setWarehouses(arr);
@@ -48,11 +56,31 @@ const MainContextProvider: FC<ContextProps> = ({children}) => {
     }
 
     const updateStep = (value: number) => {
+        switch(value) {
+            case 2:
+                performStep2();
+                break;
+            case 1:
+            default:
+                break;    
+        }
         setStep(value);
     }
 
+    const performStep2 = () => {
+        const clusters = ClusterService.depotClustering(warehouses, customers);
+        const newRoutes: RouteInformation[][] = [];
+        clusters.forEach(cl => {
+            if(cl.warehouse.cars) {
+                let groupedCustomers = ClusterService.carKMeansClustering(cl.customers, cl.warehouse.cars);
+                const routesLists = VehicleRoutingService.tabuSearch(cl.warehouse,groupedCustomers);
+                newRoutes.push(routesLists);
+            }});
+        setRoutes(newRoutes);
+    }
+
     return (
-        <MainContext.Provider value={{warehouses,customers,method,step,updateWarehouses,updateCustomers,updateMethod,updateStep}}>
+        <MainContext.Provider value={{warehouses,customers,method,step,routes,updateWarehouses,updateCustomers,updateMethod,updateStep}}>
             {children}
         </MainContext.Provider>
     );

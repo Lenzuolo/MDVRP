@@ -30,13 +30,31 @@ input::-webkit-inner-spin-button {
     height: 2em;
 }
 
-.submit-button:active {
+.submit-button:active, .return-button:active {
     animation: push 200ms ease-in-out;
 }
 
 .submit-button:hover {
     background-color: hsla(0, 5%, 45%, 5);
     border: .25em hsla(0, 5%, 39%, 5) outset;
+}
+
+.return-button {
+    background-color: white;
+    font-weight: 600;
+    font-size: 1.75em;
+    text-align: center;
+    border: 3px solid rgb(28, 28, 28);
+    border-radius: 100%;
+    max-width: 1.5em;
+    max-height: 1.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.return-button:hover {
+    background-color: hsla(0, 5%, 45%, 5);
 }
 
 @keyframes push {

@@ -5,6 +5,7 @@ import { ResourceManager } from "../../utils/ResourceManager";
 import { RadioButton, SubmitButton } from "../inputs";
 import { MdvrpTableComponent } from "../mdvrp-table-component";
 import './solver-form-component.css';
+import '../../App.css';
 
 const SolverFormComponent: FC = () => {
 

@@ -1,0 +1,25 @@
+.route-box {
+    display: flex;
+    width: 100%;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+
+.arrow-distance {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.arrow-distance.down {
+    flex-direction: column-reverse;
+}
+
+.arrow-distance > h5 {
+    padding: 0;
+    margin: 0;
+}
+
