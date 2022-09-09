@@ -5,9 +5,12 @@ import { Warehouse } from "../../types/Warehouse";
 import './mdvrp-table-component.css';
 import { Column } from "../../types/Column";
 import { NumberInput, TextInput } from "../inputs";
+import { NumberUtils } from "../../utils/NumberUtils";
+import { Randomizer } from "../randomizer-view";
 
 const MdvrpTableComponent: FC<TableProps> = (props: TableProps) => {
     
+    const [toggled, setToggled] = useState(false);
     const [data,setData] = useState(props.dataProvider);
     const [selectedItem,setSelectedItem]: any = useState();
 
@@ -66,9 +69,11 @@ const MdvrpTableComponent: FC<TableProps> = (props: TableProps) => {
         }
     }
 
-    const handleInputChange = (value: any, modelName: string, objectId: number) => {
+    const handleInputChange = (value: any, modelName?: string, objectId?: number) => {
         const newData = [...data];
-        newData.find(o => o.id === objectId)[modelName] = value;
+        if (modelName && objectId) {
+            newData.find(o => o.id === objectId)[modelName] = value;
+        }
         setData(newData);
         if(props.onDataUpdate) {
             props.onDataUpdate(newData,props.dataType);
@@ -86,6 +91,41 @@ const MdvrpTableComponent: FC<TableProps> = (props: TableProps) => {
         }
     }
 
+    const toggleRandomizer = () => {
+        setToggled(prev => {
+            let newState = prev;
+            newState = !newState;
+            return newState;
+        })
+    }
+
+    const onRandomize = (amount: number, cars?: number) => {
+        const newData = [];
+        if(cars != null) {
+            for(let i = 0; i < amount; i++) {
+                const warehouse = new Warehouse(i+1);
+                warehouse.name = 'w' + (i+1).toString();
+                warehouse.cars = Math.floor(Math.random() * cars + 1);
+                warehouse.xPos = NumberUtils.roundFloat(Math.random() * 99);
+                warehouse.yPos = NumberUtils.roundFloat(Math.random() * 99);
+                newData.push(warehouse);
+            }
+        } else {
+            for(let i = 0; i < amount; i++) {
+                const customer = new Customer(i+1);
+                customer.name = 'c' + (i+1).toString();
+                customer.xPos = NumberUtils.roundFloat(Math.random() * 99);
+                customer.yPos = NumberUtils.roundFloat(Math.random() * 99);
+                newData.push(customer);
+            }
+        }
+        setData(newData);
+        if(props.onDataUpdate) {
+            props.onDataUpdate(newData,props.dataType);
+        }
+        setToggled(false);
+    }
+
     return (
     <div id='tableBox'>
         <div className="table-header">
@@ -94,8 +134,13 @@ const MdvrpTableComponent: FC<TableProps> = (props: TableProps) => {
                 <div className="button-bar">
                     <button id="actionBtn" type="button" onClick={()=>addData()}>+ Add</button>
                     <button id="actionBtn" type="button" onClick={()=>deleteData()} disabled={!selectedItem?.id}>- Delete</button>
+                    <button id="actionBtn" type="button" onClick={()=>toggleRandomizer()}>{
+                        `${toggled ? '▲' : '▼'} Randomizer`
+                    }</button>
                 </div>}
         </div>
+        {toggled && <Randomizer carsVisible={props.dataType === 'warehouse'} onGenerate={props.dataType === 'warehouse' ? 
+        (amount,cars) => onRandomize(amount,cars) : (amount) => onRandomize(amount) }/>}
         <div className="table-wrapper">
             <table id='mdvrpTable'>
                 <thead>

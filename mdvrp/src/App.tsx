@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import { LandingPage } from './components';
 import './App.css';
 import { MainContextProvider } from './contexts';

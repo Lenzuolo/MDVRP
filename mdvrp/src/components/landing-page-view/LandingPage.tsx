@@ -2,6 +2,7 @@ import { FC, useContext, useState } from "react";
 import { MainContext } from "../../contexts";
 import { ResourceManager } from "../../utils/ResourceManager";
 import { Case, Switch } from "../helpers";
+import { SolutionPresentation } from "../solution-presentation-view";
 import { SolverFormComponent } from "../solver-form-component";
 import './landing-page.css';
 
@@ -30,7 +31,7 @@ const LandingPage: FC = () => {
                         <SolverFormComponent/>
                     </Case>
                     <Case value={2}>
-                        
+                        <SolutionPresentation/>
                     </Case>
                 </Switch>
             </div>
