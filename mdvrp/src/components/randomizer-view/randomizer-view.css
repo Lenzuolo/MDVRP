@@ -1,0 +1,22 @@
+.randomizer-body {
+    width: 60%;
+    max-height: 1.2em;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .4em;
+    padding: .5em;
+    flex-wrap: nowrap;
+}
+
+#niAmount,#niCars {
+    max-width: 1.5em;
+    text-align: center;
+}
+
+#randSubmit {
+    margin-left: auto;
+    max-width: 10em;
+    font-size: .7em;
+}
