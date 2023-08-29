@@ -5,6 +5,7 @@ import { Customer } from "../types/Customer";
 import { DepotRegionCluster } from "../types/DepotRegionCluster";
 import { RouteInformation } from "../types/RouteInformation";
 import { Warehouse } from "../types/Warehouse"
+import { MethodUtils } from "../utils/MethodUtils";
 
 export type DefaultContextState = {
     warehouses: Warehouse[];
@@ -23,7 +24,7 @@ const defaultState = () => {
     return {
         warehouses: [],
         customers: [],
-        method: 'tabu',
+        method: MethodUtils.TABU_EXTENSIVE,
         routes: [],
         step: 1,
     } as DefaultContextState;
@@ -73,7 +74,21 @@ const MainContextProvider: FC<ContextProps> = ({children}) => {
         clusters.forEach(cl => {
             if(cl.warehouse.cars) {
                 let groupedCustomers = ClusterService.carKMeansClustering(cl.customers, cl.warehouse.cars);
-                const routesLists = VehicleRoutingService.tabuSearch(cl.warehouse,groupedCustomers);
+                let routesLists: RouteInformation[] = [];
+                switch(method) {
+                    case MethodUtils.TABU_EXTENSIVE:
+                        routesLists = VehicleRoutingService.extensiveTabuSearch(cl.warehouse,groupedCustomers);
+                        break;
+                    case MethodUtils.TABU_EXCHANGE:
+                        routesLists = VehicleRoutingService.exchangeTabuSearch(cl.warehouse,groupedCustomers);
+                        break;
+                    case MethodUtils.SIMULATE_ANNEALING:
+                        break;
+                    case MethodUtils.GENETIC_ALGORITHM:
+                        break;
+                    default:
+                        break;                
+                }
                 newRoutes.push(routesLists);
             }});
         setRoutes(newRoutes);

@@ -9,7 +9,8 @@ export const labelsEN = {
     PL: 'PL',
     Warehouses: 'Warehouses',
     Customers: 'Customers',
-    TabuSearch: 'Tabu search',
-    SimulatingAnnealing: 'Simulating Annealing',
+    TabuExtensiveSearch: 'Tabu extensive search',
+    TabuExchangeSearch: 'Tabu exchange search',
+    SimulatingAnnealing: 'Simulating annealing',
     Calculate: 'Calculate'
 }
